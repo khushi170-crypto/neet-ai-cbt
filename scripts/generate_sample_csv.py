@@ -1,36 +1,107 @@
-"""One-time script to create sample questions.csv for the prototype."""
+"""Create NEET-style sample questions.csv for prototype."""
 
 import csv
 import os
+import random
 
-SUBJECTS = ["Physics", "Chemistry", "Botany", "Zoology"]
-QUESTIONS_PER_SUBJECT = 95  # 60 Section A + 30 Section B + buffer
+
+SUBJECTS = {
+    "Physics": [
+        ("Mechanics", "Newton's second law relates force, mass and acceleration."),
+        ("Current Electricity", "Ohm's law describes the relation between voltage, current and resistance."),
+        ("Optics", "Convex lenses are used for image formation."),
+        ("Thermodynamics", "Heat transfer occurs due to temperature difference."),
+    ],
+    "Chemistry": [
+        ("Atomic Structure", "Atomic number represents the number of protons."),
+        ("Chemical Bonding", "Ionic bonds involve transfer of electrons."),
+        ("Thermodynamics", "Enthalpy represents heat content of a system."),
+        ("Organic Chemistry", "Carbon forms stable covalent bonds."),
+    ],
+    "Botany": [
+        ("Cell Biology", "Cell is the basic structural unit of life."),
+        ("Plant Physiology", "Photosynthesis occurs inside chloroplasts."),
+        ("Genetics", "DNA carries hereditary information."),
+        ("Ecology", "Plants act as primary producers."),
+    ],
+    "Zoology": [
+        ("Human Physiology", "The heart pumps blood throughout the body."),
+        ("Animal Kingdom", "Chordates possess a notochord."),
+        ("Evolution", "Natural selection explains evolutionary changes."),
+        ("Biology", "Enzymes work as biological catalysts."),
+    ]
+}
+
+
+QUESTIONS_PER_SUBJECT = 45
 
 rows = []
 question_id = 1
 
-for subject in SUBJECTS:
+
+for subject, chapters in SUBJECTS.items():
+
     for i in range(1, QUESTIONS_PER_SUBJECT + 1):
+
+        chapter, concept = random.choice(chapters)
+
+        options = [
+            "It is the correct scientific explanation",
+            "It is not scientifically correct",
+            "It is partially correct",
+            "None of these"
+        ]
+
         rows.append({
             "QuestionID": f"Q{question_id:04d}",
             "Subject": subject,
-            "Chapter": f"Chapter {(i % 10) + 1}",
-            "Difficulty": ["Easy", "Medium", "Hard"][i % 3],
-            "Question": f"{subject} question {i}: What is the correct answer?",
-            "OptionA": f"Option A for {subject} Q{i}",
-            "OptionB": f"Option B for {subject} Q{i}",
-            "OptionC": f"Option C for {subject} Q{i}",
-            "OptionD": f"Option D for {subject} Q{i}",
-            "CorrectAnswer": ["A", "B", "C", "D"][i % 4],
+            "Chapter": chapter,
+            "Difficulty": random.choice(
+                ["Easy", "Medium", "Hard"]
+            ),
+            "Question": (
+                f"NEET {subject} Q{i}: {concept} "
+                "Choose the correct option."
+            ),
+            "OptionA": options[0],
+            "OptionB": options[1],
+            "OptionC": options[2],
+            "OptionD": options[3],
+            "CorrectAnswer": random.choice(
+                ["A", "B", "C", "D"]
+            ),
         })
+
         question_id += 1
 
-output_path = os.path.join(os.path.dirname(__file__), "..", "data", "questions.csv")
-os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-with open(output_path, "w", newline="", encoding="utf-8") as file:
-    writer = csv.DictWriter(file, fieldnames=rows[0].keys())
+output_path = os.path.join(
+    os.path.dirname(__file__),
+    "..",
+    "data",
+    "questions.csv"
+)
+
+os.makedirs(
+    os.path.dirname(output_path),
+    exist_ok=True
+)
+
+
+with open(
+    output_path,
+    "w",
+    newline="",
+    encoding="utf-8"
+) as file:
+
+    writer = csv.DictWriter(
+        file,
+        fieldnames=rows[0].keys()
+    )
+
     writer.writeheader()
     writer.writerows(rows)
 
-print(f"Created {len(rows)} questions at {output_path}")
+
+print(f"Created {len(rows)} NEET-style questions at {output_path}")

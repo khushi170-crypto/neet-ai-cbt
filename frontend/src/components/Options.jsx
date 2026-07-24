@@ -8,7 +8,12 @@ function Options({ question, selectedAnswer, onSelect }) {
   return (
     <div className="options-list">
       {OPTION_KEYS.map((key) => (
-        <label key={key} className="option-item">
+        <label
+          key={key}
+          className={`option-item ${
+            selectedAnswer === key ? "selected-option" : ""
+          }`}
+        >
           <input
             type="radio"
             name={question.QuestionID}
@@ -16,8 +21,12 @@ function Options({ question, selectedAnswer, onSelect }) {
             checked={selectedAnswer === key}
             onChange={() => onSelect(key)}
           />
+
           <span className="option-label">{key}</span>
-          <span>{question[`Option${key}`]}</span>
+
+          <span className="option-text">
+            {question[`Option${key}`]}
+          </span>
         </label>
       ))}
     </div>

@@ -13,9 +13,9 @@ def generate_subject_questions(state: ExamState) -> ExamState:
         subject_df = df[df["Subject"] == subject]
 
         shuffled = subject_df.sample(
-            frac=1,
-            random_state=rules["Random_State"]
-        )
+    frac=1,
+    random_state=rules["Random_State"]
+    ).reset_index(drop=True)
 
         section_a = shuffled.iloc[:60]
         section_b = shuffled.iloc[60:90]
