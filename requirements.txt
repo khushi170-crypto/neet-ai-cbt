@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+langgraph
+langchain
+langchain-ibm
+ibm-watsonx-ai
+pandas
+python-dotenv
+pydantic
