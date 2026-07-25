@@ -16,7 +16,8 @@ def export_exam(state: ExamState) -> ExamState:
             state["exam"],
             file,
             indent=4,
-            ensure_ascii=False
+            ensure_ascii=False,
+            allow_nan=False
         )
 
     return state

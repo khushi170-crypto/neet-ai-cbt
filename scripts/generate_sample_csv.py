@@ -59,10 +59,7 @@ for subject, chapters in SUBJECTS.items():
             "Difficulty": random.choice(
                 ["Easy", "Medium", "Hard"]
             ),
-            "Question": (
-                f"NEET {subject} Q{i}: {concept} "
-                "Choose the correct option."
-            ),
+            "Question": f"{concept} Which of the following is correct?",
             "OptionA": options[0],
             "OptionB": options[1],
             "OptionC": options[2],

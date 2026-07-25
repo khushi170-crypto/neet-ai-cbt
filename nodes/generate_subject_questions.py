@@ -13,16 +13,26 @@ def generate_subject_questions(state: ExamState) -> ExamState:
         subject_df = df[df["Subject"] == subject]
 
         shuffled = subject_df.sample(
-    frac=1,
-    random_state=rules["Random_State"]
-    ).reset_index(drop=True)
+            frac=1,
+            random_state=rules["Random_State"]
+        ).reset_index(drop=True)
 
-        section_a = shuffled.iloc[:60]
-        section_b = shuffled.iloc[60:90]
+        # Number of questions required for this subject
+        total_questions = rules[subject]
+
+        # Prototype: All questions in Section A
+        section_a_count = total_questions
+        section_b_count = 0
+
+        section_a = shuffled.iloc[:section_a_count]
+        section_b = shuffled.iloc[
+            section_a_count:
+            section_a_count + section_b_count
+        ]
 
         selected_questions[subject] = {
-            "Section_A": section_a.to_dict(orient="records"),
-            "Section_B": section_b.to_dict(orient="records")
+            "Section_A": section_a.fillna("").to_dict(orient="records"),
+            "Section_B": section_b.fillna("").to_dict(orient="records")
         }
 
     state["selected_questions"] = selected_questions
